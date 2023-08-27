@@ -15,7 +15,6 @@ export default function Deck() {
     const { cards: serverCards } = await createCard(deckId, text);
     setCards(serverCards);
     setText("");
-    console.log(cards);
   }
 
   async function handleDeleteCard(deckId, index) {
@@ -38,7 +37,7 @@ export default function Deck() {
 
   return (
     <div className="App page-width">
-      <h1>Cards</h1>
+      <h1>{deck?.title}</h1>
       <ul className="decks">
         {cards.map((card, index) => (
           <li key={card}>

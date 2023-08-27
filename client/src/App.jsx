@@ -34,8 +34,8 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <h1>Decks</h1>
+    <div className="App page-width">
+      <h1>Collection</h1>
       <ul className="decks">
         {decks.map((deck) => (
           <li key={deck._id}>

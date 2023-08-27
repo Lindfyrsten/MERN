@@ -28,6 +28,7 @@ form {
 }
 
 .decks li {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -41,5 +42,16 @@ form {
 
 .decks li:hover {
   background: #e6e6e6;
+}
+
+.delete-button {
   cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+}
+
+.delete-button:hover {
+  scale: 1.1;
 }

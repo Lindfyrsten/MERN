@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { getCards } from "../api/getCards";
 import "./Cards.css";
+import { createCard } from "../api/createCard";
 
 export default function Cards() {
   const [cards, setCards] = useState([]);
-  const [sortDirection, setSortDirection] = useState("asc"); // Initial sort direction
+  const [sortConfig, setSortConfig] = useState({
+    key: "",
+    direction: "asc",
+  });
 
   useEffect(() => {
     async function fetchCards() {
@@ -14,42 +18,56 @@ export default function Cards() {
     fetchCards();
   }, []);
 
-  function handleTitleSort() {
-    const sortedCards = [...cards]; // Create a copy of the cards array
+  // useEffect(() => {
+  //   for (let i = 0; i < 1000; i++) {
+  //     createCard("64ef95fc21d4a095c2a380b5", i + " created by API");
+  //   }
+  // }, []);
+
+  function handleSort(key) {
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+    setSortConfig({ key, direction });
+
+    const sortedCards = [...cards];
     sortedCards.sort((a, b) => {
-      // Compare the titles
-      const titleA = a.title.toUpperCase();
-      const titleB = b.title.toUpperCase();
-      if (titleA < titleB) {
-        return sortDirection === "asc" ? -1 : 1; // Determine sorting order
+      const valueA = a[key].toUpperCase();
+      const valueB = b[key].toUpperCase();
+      if (valueA < valueB) {
+        return direction === "asc" ? -1 : 1;
       }
-      if (titleA > titleB) {
-        return sortDirection === "asc" ? 1 : -1; // Determine sorting order
+      if (valueA > valueB) {
+        return direction === "asc" ? 1 : -1;
       }
       return 0;
     });
 
-    setSortDirection(sortDirection === "asc" ? "desc" : "asc"); // Toggle sort direction
     setCards(sortedCards);
   }
+
   return (
     <div className="page-width">
+      <h1>Total cards: {cards.length}</h1>
       <table id="cards">
         <thead>
           <tr>
+            <th onClick={() => handleSort("title")}>Title</th>
+            <th onClick={() => handleSort("ownerName")}>Owner</th>
             <th>Card id</th>
-            <th onClick={handleTitleSort}>Title</th>
-            <th>Owner</th>
+            <th>Owner id</th>
           </tr>
         </thead>
         <tbody>
           {cards.map((card) => (
             <tr key={card._id} id={card._id}>
-              <td>
-                <a href={`/cards/${card._id}`}>{card._id}</a>
-              </td>
               <td>{card.title}</td>
-              <td>{card.ownerName}</td>
+              <td>
+                <a href={`/decks/${card.ownerId}`}>{card.ownerName}</a>
+              </td>
+              <td>{card._id}</td>
+              <td>{card.ownerId}</td>
             </tr>
           ))}
         </tbody>

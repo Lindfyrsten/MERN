@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { createCard } from "../api/createCard";
 import { getDeck } from "../api/getDeck";
 import { deleteCard } from "../api/deleteCard";
+import { getCardsInDeck } from "../api/getCardsInDeck";
 
 export default function Deck() {
   const [deck, setDeck] = useState(null);
@@ -12,14 +13,15 @@ export default function Deck() {
 
   async function handleCreateCard(e) {
     e.preventDefault();
-    const { cards: serverCards } = await createCard(deckId, text);
-    setCards(serverCards);
+    await createCard(deckId, text);
+    const updatedCards = await getCardsInDeck(deckId);
+    setCards(updatedCards);
     setText("");
   }
 
-  async function handleDeleteCard(deckId, index) {
+  async function handleDeleteCard(deckId, index, cardId) {
     if (!deckId) return;
-    await deleteCard(deckId, index);
+    await deleteCard(deckId, cardId);
     setCards(cards.filter((card, i) => i !== index));
   }
 
@@ -30,7 +32,8 @@ export default function Deck() {
       }
       const newDeck = await getDeck(deckId);
       setDeck(newDeck);
-      setCards(newDeck.cards);
+      const newCards = await getCardsInDeck(deckId);
+      setCards(newCards);
     }
     fetchDeck();
   }, [deckId]);
@@ -38,13 +41,13 @@ export default function Deck() {
   return (
     <div className="App page-width">
       <h1>{deck?.title}</h1>
-      <ul className="decks">
-        {cards.map((card, index) => (
-          <li key={card}>
-            {card}
+      <ul className="cards">
+        {cards?.map((card, index) => (
+          <li key={index}>
+            {card.title}
             <div
               className="delete-button"
-              onClick={() => handleDeleteCard(deckId, index)}
+              onClick={() => handleDeleteCard(deckId, index, card._id)}
             >
               X
             </div>

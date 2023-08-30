@@ -5,9 +5,7 @@ const Schema = mongoose.Schema;
 
 const DeckSchema = new Schema({
   title: String,
-  cards: [String],
+  cards: [{ type: Schema.Types.ObjectId, ref: "Card" }],
 });
 
-const DeckModel = mongoose.model("Deck", DeckSchema);
-
-export default DeckModel;
+export default mongoose.models.Deck || mongoose.model("Deck", DeckSchema);

@@ -11,8 +11,13 @@ header nav {
   height: 100%;
 }
 
+header .active {
+  text-decoration: underline;
+  color: #fff;
+}
+
 header a {
-  color: white;
+  color: rgba(255, 255, 255, 0.753);
 }
 
 .left-nav,

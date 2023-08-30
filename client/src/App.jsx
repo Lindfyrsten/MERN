@@ -29,7 +29,7 @@ function App() {
     fetchDecks();
 
     return () => {
-      console.log("unmounting");
+      // console.log("unmounting");
     };
   }, []);
 

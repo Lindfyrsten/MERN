@@ -1,0 +1,26 @@
+#cards {
+  margin-top: 20px;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#cards td,
+#customers th {
+  border: 1px solid #ddd;
+  padding: 12px;
+}
+
+#cards tr:nth-child(even) {
+  background-color: grey;
+}
+
+#cards tr:hover {
+  background-color: #ddd;
+}
+
+#cards th {
+  padding: 12px;
+  text-align: left;
+  background-color: #ffffff;
+  color: black;
+}

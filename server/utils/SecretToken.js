@@ -3,14 +3,9 @@ import jwt from "jsonwebtoken";
 
 config();
 
-const SecretToken = (email, userId, duration) => {
-  const payload = {
-    email,
-    userId,
-    duration,
-  };
-  return jwt.sign(payload, process.env.TOKEN_SECRET, {
-    expiresIn: duration,
+const SecretToken = (id) => {
+  return jwt.sign({ id }, process.env.TOKEN_KEY, {
+    expiresIn: 3 * 24 * 60 * 60,
   });
 };
 

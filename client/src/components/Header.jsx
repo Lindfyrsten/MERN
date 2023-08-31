@@ -15,8 +15,12 @@ export default function Header() {
           </NavLink>
         </div>
         <div className="right-nav">
-          <a href="/login">LOGIN</a>
-          <a href="/signup">SIGNUP</a>
+          <NavLink to="/login" reloadDocument>
+            LOGIN
+          </NavLink>
+          <NavLink to="/signup" reloadDocument>
+            SIGNUP
+          </NavLink>
         </div>
       </nav>
     </header>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getCards } from "../api/getCards";
 import "./Cards.css";
-import { createCard } from "../api/createCard";
 
 export default function Cards() {
   const [cards, setCards] = useState([]);
@@ -12,7 +11,9 @@ export default function Cards() {
 
   useEffect(() => {
     async function fetchCards() {
+      const startTime = performance.now();
       const newCards = await getCards();
+      const endTime = performance.now();
       setCards(newCards);
     }
     fetchCards();

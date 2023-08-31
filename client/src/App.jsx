@@ -1,68 +1,51 @@
-import { Link } from "react-router-dom";
-import "./App.css";
-import { useEffect, useState } from "react";
-import { deleteDeck } from "./api/deleteDeck";
-import { getDecks } from "./api/getDecks";
-import { createDeck } from "./api/createDeck";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./base.css";
+import {
+  BrowserRouter,
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import Header from "./components/Header.jsx";
+import Login from "./routes/Login.jsx";
+import Signup from "./routes/Signup.jsx";
+import Deck from "./routes/Deck";
+import Cards from "./routes/Cards";
+import Decks from "./routes/Decks";
+import Home from "./routes/Home";
 
-function App() {
-  const [title, setTitle] = useState("");
-  const [decks, setDecks] = useState([]);
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/decks",
+    element: <Decks />,
+  },
+  {
+    path: "/decks/:deckId",
+    element: <Deck />,
+  },
+  {
+    path: "/cards",
+    element: <Cards />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
+  },
+]);
 
-  async function handleCreateDeck(e) {
-    e.preventDefault();
-    const deck = await createDeck(title);
-    setDecks([...decks, deck]);
-    setTitle("");
-  }
-
-  async function handleDeleteDeck(deckId) {
-    deleteDeck(deckId);
-    setDecks(decks.filter((deck) => deck._id !== deckId));
-  }
-
-  useEffect(() => {
-    async function fetchDecks() {
-      const newDecks = await getDecks();
-      setDecks(newDecks);
-    }
-    fetchDecks();
-
-    return () => {
-      // console.log("unmounting");
-    };
-  }, []);
-
-  return (
-    <div className="App page-width">
-      <h1>Collection</h1>
-      <ul className="decks">
-        {decks.map((deck) => (
-          <li key={deck._id}>
-            <div
-              className="delete-button"
-              onClick={() => handleDeleteDeck(deck._id)}
-            >
-              X
-            </div>
-            <Link to={`decks/${deck._id}`}>{deck.title}</Link>
-          </li>
-        ))}
-      </ul>
-      <form onSubmit={handleCreateDeck}>
-        <label htmlFor="deck-title">Deck Title</label>
-        <input
-          id="deck-title"
-          type="text"
-          value={title}
-          onChange={(e) => {
-            setTitle(e.target.value);
-          }}
-        />
-        <button>Create Deck</button>
-      </form>
-    </div>
-  );
-}
-
-export default App;
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <Header />
+    </BrowserRouter>
+    <RouterProvider router={router} />
+  </React.StrictMode>
+);
